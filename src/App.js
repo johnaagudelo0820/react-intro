@@ -20,9 +20,28 @@ function App() {
   const completed = todos.filter(({ completed }) => !!completed).length;
   const total = todos.length;
 
-  const todosFiltered = todos.filter(({ title }) =>
-    title.toLowerCase().includes(searchValue.toLowerCase())
-  );
+  const todosFiltered = todos.filter(({ title }) => {
+    const titleText = title.toLowerCase();
+    const searchText = searchValue.toLowerCase();
+    return titleText.toLowerCase().includes(searchText);
+  });
+
+  const deleteTodoItem = (todoIndex) => {
+    setTodos((todoItems) => {
+      const values = [...todoItems];
+      values.splice(todoIndex, 1);
+      return values;
+    });
+  };
+
+  const completeTodo = (todoIndex) => {
+    setTodos((todos) => {
+      const todosItems = [...todos];
+      const { completed } = todosItems[todoIndex];
+      todosItems[todoIndex].completed = !completed;
+      return todosItems;
+    });
+  };
 
   return (
     <>
@@ -30,8 +49,14 @@ function App() {
       <TodoSearch {...{ searchValue, setSearchValue }} />
 
       <TodoList>
-        {todosFiltered.map(({ title, completed }) => (
-          <TodoItem title={title} key={title} completed={completed} />
+        {todosFiltered.map(({ title, completed }, index) => (
+          <TodoItem
+            title={title}
+            key={title}
+            completed={completed}
+            onComplete={() => completeTodo(index)}
+            deleteTodoItem={() => deleteTodoItem(index)}
+          />
         ))}
       </TodoList>
 
