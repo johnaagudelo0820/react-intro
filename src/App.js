@@ -44,7 +44,7 @@ function App() {
   };
 
   return (
-    <>
+    <div style={{ padding: 20 }}>
       <TodoCounter total={total} completed={completed} />
       <TodoSearch {...{ searchValue, setSearchValue }} />
 
@@ -61,7 +61,7 @@ function App() {
       </TodoList>
 
       <CreateTodoButton />
-    </>
+    </div>
   );
 }
 
