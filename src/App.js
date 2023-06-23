@@ -6,15 +6,21 @@ import { TodoList } from './components/TodoList';
 import { TodoItem } from './components/TodoItem';
 import { CreateTodoButton } from './components/CreateTodoButton';
 
-const listDefault = [
-  { title: 'Estudiar Inversión', completed: true },
-  { title: 'Estudiar JS', completed: false },
-  { title: 'Realizar trabajos de la empresa', completed: true },
-  { title: 'jugar con juandi', completed: false },
-];
+// const listDefault = [
+//   { title: 'Estudiar Inversión', completed: true },
+//   { title: 'Estudiar JS', completed: false },
+//   { title: 'Realizar trabajos de la empresa', completed: true },
+//   { title: 'jugar con juandi', completed: false },
+// ];
+// localStorage.setItem('TODOS_V1', listDefault)
+
+const KEY_LOCALSTORAGE_VERSION = 'TODOS_V1';
 
 function App() {
-  const [todos, setTodos] = useState(listDefault);
+  const localStorageTodos = localStorage.getItem(KEY_LOCALSTORAGE_VERSION);
+  const parsedTodos = JSON.parse(localStorageTodos) ?? [];
+
+  const [todos, setTodos] = useState(parsedTodos);
   const [searchValue, setSearchValue] = useState('');
 
   const completed = todos.filter(({ completed }) => !!completed).length;
@@ -26,21 +32,22 @@ function App() {
     return titleText.toLowerCase().includes(searchText);
   });
 
+  const saveTodos = (newTodos) => {
+    setTodos(newTodos);
+    localStorage.setItem(KEY_LOCALSTORAGE_VERSION, JSON.stringify(newTodos));
+  };
+
   const deleteTodoItem = (todoIndex) => {
-    setTodos((todoItems) => {
-      const values = [...todoItems];
-      values.splice(todoIndex, 1);
-      return values;
-    });
+    const todosItems = [...todos];
+    todosItems.splice(todoIndex, 1);
+    saveTodos(todosItems);
   };
 
   const completeTodo = (todoIndex) => {
-    setTodos((todos) => {
-      const todosItems = [...todos];
-      const { completed } = todosItems[todoIndex];
-      todosItems[todoIndex].completed = !completed;
-      return todosItems;
-    });
+    const todosItems = [...todos];
+    const { completed } = todosItems[todoIndex];
+    todosItems[todoIndex].completed = !completed;
+    saveTodos(todosItems);
   };
 
   return (
