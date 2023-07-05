@@ -12,7 +12,7 @@ function TodoProvider({ children }) {
     loading,
   } = useLocalStorage(KEY_LOCALSTORAGE_VERSION, []);
   const [searchValue, setSearchValue] = useState('');
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
 
   const completed = todos.filter(({ completed }) => !!completed).length;
   const total = todos.length;
@@ -36,6 +36,11 @@ function TodoProvider({ children }) {
     saveTodos(todosItems);
   };
 
+  const addTodo = (newTodo) => {
+    const todosItem = [...todos, { title: newTodo, completed: false }];
+    saveTodos(todosItem);
+  };
+
   return (
     <TodoContext.Provider
       value={{
@@ -48,6 +53,7 @@ function TodoProvider({ children }) {
         deleteTodoItem,
         openModal,
         setOpenModal,
+        addTodo,
       }}
     >
       {children}

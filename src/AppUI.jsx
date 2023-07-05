@@ -7,16 +7,11 @@ import { CreateTodoButton } from './components/CreateTodoButton';
 import { TodosLoading } from './components/TodoLoader';
 import { TodoContext } from './context';
 import Modal from './components/Modal';
+import TodoForm from './components/TodoForm';
 
 const AppUI = () => {
-  const {
-    loading,
-    todosFiltered,
-    completeTodo,
-    deleteTodoItem,
-    openModal,
-    setOpenModal,
-  } = useContext(TodoContext);
+  const { loading, todosFiltered, completeTodo, deleteTodoItem, openModal } =
+    useContext(TodoContext);
   return (
     <div style={{ padding: 20 }}>
       <TodoCounter />
@@ -43,7 +38,11 @@ const AppUI = () => {
 
       <CreateTodoButton />
 
-      {openModal && <Modal>portal de react</Modal>}
+      {openModal && (
+        <Modal>
+          <TodoForm />
+        </Modal>
+      )}
     </div>
   );
 };

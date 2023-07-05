@@ -13,7 +13,7 @@ export const useLocalStorage = (keyItem, initialValue) => {
       setItem(parsedItem);
       setLoading(false);
     }, 3000);
-  }, []);
+  }, [initialValue, keyItem]);
 
   const saveItem = (item) => {
     setItem(item);
